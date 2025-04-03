@@ -16,25 +16,28 @@ public class Schedule extends BaseEntity {
     @Column (nullable = false)
     private String title;
 
-    @Column (nullable = false)
+    @Column (columnDefinition = "longtext")
     private String task;
 
-    @Column(nullable = false, unique = true)
-    private String username;
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
     public Schedule() {
     }
 
-    public Schedule(String title, String task, String username) {
+    public Schedule(String title, String task) {
         this.title = title;
         this.task = task;
-        this.username = username;
     }
 
     public void updateSchedule(ScheduleRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.task = requestDto.getTask();
-        this.username = requestDto.getUsername();
-    };
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 }

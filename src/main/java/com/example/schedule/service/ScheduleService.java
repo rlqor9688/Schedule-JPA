@@ -3,7 +3,9 @@ package com.example.schedule.service;
 import com.example.schedule.dto.ScheduleRequestDto;
 import com.example.schedule.dto.ScheduleResponseDto;
 import com.example.schedule.entity.Schedule;
+import com.example.schedule.entity.User;
 import com.example.schedule.repository.ScheduleRepository;
+import com.example.schedule.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +17,17 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
 
     public ScheduleResponseDto createSchedule(ScheduleRequestDto requestDto) {
-        Schedule schedule = new Schedule(requestDto.getTitle(), requestDto.getTask(), requestDto.getUsername());
+
+        User findUser = userRepository.findUserByUsernameOrElseThrow(requestDto.getUsername());
+
+        Schedule schedule = new Schedule(requestDto.getTitle(), requestDto.getTask());
+        schedule.setUser(findUser);
+
         scheduleRepository.save(schedule);
+
         return new ScheduleResponseDto(schedule);
     }
 
