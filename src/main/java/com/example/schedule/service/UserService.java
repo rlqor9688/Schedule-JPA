@@ -1,12 +1,16 @@
 package com.example.schedule.service;
 
+import com.example.schedule.dto.LoginRequestDto;
+import com.example.schedule.dto.LoginResponseDto;
 import com.example.schedule.dto.UserRequestDto;
 import com.example.schedule.dto.UserResponseDto;
 import com.example.schedule.entity.User;
 import com.example.schedule.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -15,10 +19,19 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserResponseDto save(UserRequestDto requestDto) {
+    @Transactional
+    public UserResponseDto signUp(UserRequestDto requestDto) {
+        if (userRepository.findUserByEmail(requestDto.getEmail()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 등록된 이메일입니다.");
+        }
         User user = new User(requestDto);
         User savedUser = userRepository.save(user);
         return new UserResponseDto(savedUser);
+    }
+
+    public LoginResponseDto login(LoginRequestDto requestDto) {
+        User user = userRepository.findUserByEmailAndPasswordOrElseThrow(requestDto.getEmail(), requestDto.getPassword());
+        return new LoginResponseDto(user);
     }
 
     public List<UserResponseDto> findAllUser() {
