@@ -12,7 +12,7 @@ public class ScheduleResponseDto {
     private Long id;
     private String title;
     private String task;
-    private String username;
+    private Long userId;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
@@ -20,7 +20,7 @@ public class ScheduleResponseDto {
         this.id = schedule.getId();
         this.title = schedule.getTitle();
         this.task = schedule.getTask();
-        this.username = schedule.getUser().getUsername();
+        this.userId = schedule.getUser().getId();
         this.createdAt = schedule.getCreatedAt();
         this.modifiedAt = schedule.getModifedAt();
     }

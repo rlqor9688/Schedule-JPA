@@ -9,12 +9,12 @@ public class ScheduleRequestDto {
 
     private final String task;
 
-    private final String username;
+    private final Long userId;
 
-    public ScheduleRequestDto(String title, String task, String username) {
+    public ScheduleRequestDto(String title, String task, Long userId) {
         this.title = title;
         this.task = task;
-        this.username = username;
+        this.userId = userId;
     }
 
 }
