@@ -58,5 +58,10 @@ public class UserService {
         userRepository.delete(findUser);
     }
 
-
+    public void validateUser(Long id, Long currentUserId) {
+        User user = userRepository.findByIdOrElseThrow(id);
+        if (!user.getId().equals(currentUserId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "수정 권한이 없습니다.");
+        }
+    }
 }

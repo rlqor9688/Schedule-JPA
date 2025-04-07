@@ -21,6 +21,6 @@ public class UserResponseDto {
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.createdAt = user.getCreatedAt();
-        this.modifiedAt = user.getModifedAt();
+        this.modifiedAt = user.getModifiedAt();
     }
 }

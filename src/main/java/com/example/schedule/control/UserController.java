@@ -77,13 +77,28 @@ public class UserController {
     @PatchMapping("/{id}")
     public ResponseEntity<UserResponseDto> updateUser(
             @PathVariable Long id,
-            @RequestBody UserRequestDto requestDto) {
-        UserResponseDto responseDto = userService.update(id, requestDto);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+            @RequestBody UserRequestDto requestDto,
+            HttpServletRequest request) {
+        /**
+         * session에서 responseDto 갖고 오기
+         */
+        HttpSession session = request.getSession();
+        UserResponseDto responseDto = (UserResponseDto) session.getAttribute(Const.LOGIN_USER);
+        userService.validateUser(id, responseDto.getId());
+        UserResponseDto updateResponseDto = userService.update(id, requestDto);
+        return new ResponseEntity<>(updateResponseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(
+            @PathVariable Long id,
+            HttpServletRequest request) {
+        /**
+         * session에서 responseDto 갖고 오기
+         */
+        HttpSession session = request.getSession();
+        UserResponseDto responseDto = (UserResponseDto) session.getAttribute(Const.LOGIN_USER);
+        userService.validateUser(id, responseDto.getId());
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

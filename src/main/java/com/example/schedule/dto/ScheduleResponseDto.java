@@ -22,7 +22,7 @@ public class ScheduleResponseDto {
         this.task = schedule.getTask();
         this.userId = schedule.getUser().getId();
         this.createdAt = schedule.getCreatedAt();
-        this.modifiedAt = schedule.getModifedAt();
+        this.modifiedAt = schedule.getModifiedAt();
     }
 
 }
